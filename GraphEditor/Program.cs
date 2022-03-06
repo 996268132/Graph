@@ -15,7 +15,7 @@ namespace GraphNodes
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new ExampleForm());
+			Application.Run(new EditorForm());
 		}
 	}
 }

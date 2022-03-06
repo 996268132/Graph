@@ -30,6 +30,15 @@ using Graph.Items;
 
 namespace Graph
 {
+	public enum NodeType
+	{
+		Title,
+		Int,
+		Float,
+		Vector,
+		Color,
+	}
+
 	public sealed class NodeEventArgs : EventArgs
 	{
 		public NodeEventArgs(Node node) { Node = node; }
@@ -100,8 +109,8 @@ namespace Graph
 		internal readonly List<NodeConnector>	inputConnectors		= new List<NodeConnector>();
 		internal readonly List<NodeConnector>	outputConnectors	= new List<NodeConnector>();
 		internal readonly List<NodeConnection>	connections			= new List<NodeConnection>();
-		internal readonly NodeTitleItem			titleItem			= new NodeTitleItem();
-		readonly List<NodeItem>					nodeItems			= new List<NodeItem>();
+		public NodeTitleItem			titleItem			= new NodeTitleItem();
+		readonly List<NodeItem>			nodeItems			= new List<NodeItem>();
 
 		public Node(string title)
 		{

@@ -510,7 +510,7 @@ namespace Graph
 			} else
 			if ((state & RenderState.Connected) != 0)
 			{
-				return Color.Black;
+				return Color.LimeGreen;
 			} else
 				return Color.LightGray;
 		}

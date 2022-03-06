@@ -29,8 +29,13 @@ using System.Drawing;
 
 namespace Graph.Items
 {
-	internal sealed class NodeTitleItem : NodeItem
+	public sealed class NodeTitleItem : NodeItem
 	{
+		public NodeTitleItem() :
+			base(true,true)
+		{
+		}
+
 		#region Text
 		string			internalTitle = string.Empty;
 		public string	Title		

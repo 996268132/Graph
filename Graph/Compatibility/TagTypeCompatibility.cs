@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Graph.Compatibility {
+
 	/// <summary>
 	/// Determines the compatibility between two node item connectors based on the type of the Tag property.
 	/// </summary>
@@ -16,8 +17,8 @@ namespace Graph.Compatibility {
 		/// <returns><see langword="true"/> if the connection is valid; <see langword="false"/> otherwise</returns>
 		public bool CanConnect( NodeConnector from, NodeConnector to ) 
 		{
-			if (null == from.Item.Tag || null == to.Item.Tag) return false;
-			if (from.Item.Tag.GetType() == to.Item.Tag.GetType())
+			//if (null == from.Item.Tag || null == to.Item.Tag) return false;
+			if (from.Item.GetType().IsAssignableFrom(to.Item.GetType()))
 			{
 				return true;
 			}

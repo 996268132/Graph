@@ -13,28 +13,28 @@ using Graph.Items;
 
 namespace GraphNodes
 {
-	public partial class ExampleForm : Form
+	public partial class EditorForm : Form
 	{
-		public ExampleForm()
+		public EditorForm()
 		{
 			InitializeComponent();
 
 			graphControl.CompatibilityStrategy = new TagTypeCompatibility();
 
 			var someNode = new Node("My Title");
-			someNode.Location = new Point(500, 100);
-			var check1Item = new NodeCheckboxItem("Check 1", true, false) { Tag = 31337 };
+			someNode.Location = new Point(400, 100);
+			var check1Item = new NodeCheckboxItem("Check 1", true, false);
 			someNode.AddItem(check1Item);
-			someNode.AddItem(new NodeCheckboxItem("Check 2", true, false) { Tag = 42f });
+			someNode.AddItem(new NodeCheckboxItem("Check 2", true, false));
 			
 			graphControl.AddNode(someNode);
 
 			var colorNode = new Node("Color");
-			colorNode.Location = new Point(200, 50);
+			colorNode.Location = new Point(200, 100);
 			var redChannel		= new NodeSliderItem("R", 64.0f, 16.0f, 0, 1.0f, 0.0f, false, false);
 			var greenChannel	= new NodeSliderItem("G", 64.0f, 16.0f, 0, 1.0f, 0.0f, false, false);
 			var blueChannel		= new NodeSliderItem("B", 64.0f, 16.0f, 0, 1.0f, 0.0f, false, false);
-			var colorItem		= new NodeColorItem("Color", Color.Black, false, true) { Tag = 1337 };
+			var colorItem		= new NodeColorItem("Color", Color.Black, false, true);
 
 			EventHandler<NodeItemEventArgs> channelChangedDelegate = delegate(object sender, NodeItemEventArgs args)
 			{
@@ -54,10 +54,11 @@ namespace GraphNodes
 
 			colorItem.Clicked += new EventHandler<NodeItemEventArgs>(OnColClicked);
 			colorNode.AddItem(colorItem);
+			colorNode.AddItem(new NodeCheckboxItem("IsTrue", true, true));
 			graphControl.AddNode(colorNode);
 
 			var textureNode = new Node("Texture");
-			textureNode.Location = new Point(300, 150);
+			textureNode.Location = new Point(600, 100);
 			var imageItem = new NodeImageItem(Properties.Resources.example, 64, 64, false, true) { Tag = 1000f };
 			imageItem.Clicked += new EventHandler<NodeItemEventArgs>(OnImgClicked);
 			textureNode.AddItem(imageItem);
@@ -68,7 +69,9 @@ namespace GraphNodes
 			graphControl.ConnectionRemoving += new EventHandler<AcceptNodeConnectionEventArgs>(OnConnectionRemoved);
 			graphControl.ShowElementMenu	+= new EventHandler<AcceptElementLocationEventArgs>(OnShowElementMenu);
 
-			graphControl.Connect(colorItem, check1Item);
+            //graphControl.Connect(colorItem, check1Item);
+            graphControl.Connect(colorNode.titleItem, someNode.titleItem);
+			graphControl.Connect(someNode.titleItem, textureNode.titleItem);
 		}
 
 		void OnImgClicked(object sender, NodeItemEventArgs e)
@@ -91,22 +94,22 @@ namespace GraphNodes
 			if (e.Element == null)
 			{
 				// Show a test menu for when you click on nothing
-				testMenuItem.Text = "(clicked on nothing)";
-				nodeMenu.Show(e.Position);
+				popupMenu.Text = "(clicked on nothing)";
+				contextMenu.Show(e.Position);
 				e.Cancel = false;
 			} else
 			if (e.Element is Node)
 			{
 				// Show a test menu for a node
-				testMenuItem.Text = ((Node)e.Element).Title;
-				nodeMenu.Show(e.Position);
+				popupMenu.Text = ((Node)e.Element).Title;
+				contextMenu.Show(e.Position);
 				e.Cancel = false;
 			} else
 			if (e.Element is NodeItem)
 			{
 				// Show a test menu for a nodeItem
-				testMenuItem.Text = e.Element.GetType().Name;
-				nodeMenu.Show(e.Position);
+				popupMenu.Text = e.Element.GetType().Name;
+				contextMenu.Show(e.Position);
 				e.Cancel = false;
 			} else
 			{
@@ -121,7 +124,7 @@ namespace GraphNodes
 			//e.Cancel = true;
 		}
 
-		static int counter = 1;
+        static int counter = 1;
 		void OnConnectionAdded(object sender, AcceptNodeConnectionEventArgs e)
 		{
 			//e.Cancel = true;
@@ -185,10 +188,5 @@ namespace GraphNodes
 
 			this.DoDragDrop(colorNode, DragDropEffects.Copy);
 		}
-
-		private void OnShowLabelsChanged(object sender, EventArgs e)
-		{
-			graphControl.ShowLabels = showLabelsCheckBox.Checked;
-		}
-	}
+    }
 }
